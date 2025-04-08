@@ -1,66 +1,81 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link href="./quizstyle.css" type="text/css" rel="stylesheet">
-    </head>
-    <body>
-        <h1>Take the Portfolio Quiz</h1>
-        <h3>What have you learnt about Hao Jin?</h3>
-        <div id="quiz">
-            //creates a quiz
-            const quizContainer = document.getElementById('quiz');
-            const resultsContainer = document.getElementById('results');
-            const submitButton = document.getElementById('submit');
-            const quizQuestions = [
-                {
-                    question: "Hao Jin is currently a moderator of:",
-                    answers: {
-                                a: "Introduction to coding for Researchers",
-                                b: "Human-computer interaction",
-                                c: "Interactive programming languages",
-                                d: "Low and high fidelity prototyping"
-                            },
-                    correctAnswer: "a"
-                },
-                {
-                    question: "Hao works closely with:",
-                    answers: {
-                                a: "Undergraduate Students",
-                                b: "Honours students",
-                                c: "Higher Degree Research Students",
-                                d: "All of the above"
-                            },
-                    correctAnswer: "c"
-                },
-                {
-                    question: "Hao's web design and development skills
-                    answers: {
-                                a: "Contextual inquiry",
-                                b: "Participant observation",
-                                c: "User interface design",
-                                d: "Prototype sorting"
-                            },
-                    correctAnswer: "c"
-                },
-                {
-                    question: "Hao is super passionate about:",
-                    answers: {
-                                a: "People",
-                                b: "Innovation",
-                                c: "Human-centred design",
-                                d: "All of the above and more!"
-                            },
-                    correctAnswer: "d"
-                }
-            ];
+<head>
+    <meta charset="UTF-8">
+    <title>Portfolio Quiz</title>
+    <link href="./quizstyle.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+    <h1>Take the Portfolio Quiz</h1>
+    <h3>What have you learnt about Hao Jin?</h3>
 
-            function buildQuiz(){
-                }
-            function showResults(){
-                }
+    <!-- 表单开始，把 quiz 和按钮都“包住” -->
+    <form action="https://formspree.io/f/mldjovob" method="POST" id="quiz-form">
+        <div id="quiz">
+            <!-- 题目1 -->
+            <p>1. Hao Jin is currently a moderator of:</p>
+            <label><input type="radio" name="question1" value="a" required> Introduction to coding for Researchers</label><br>
+            <label><input type="radio" name="question1" value="b"> Human-computer interaction</label><br>
+            <label><input type="radio" name="question1" value="c"> Interactive programming languages</label><br>
+            <label><input type="radio" name="question1" value="d"> Low and high fidelity prototyping</label><br><br>
+
+            <!-- 题目2 -->
+            <p>2. Hao works closely with:</p>
+            <label><input type="radio" name="question2" value="a" required> Undergraduate Students</label><br>
+            <label><input type="radio" name="question2" value="b"> Honours students</label><br>
+            <label><input type="radio" name="question2" value="c"> Higher Degree Research Students</label><br>
+            <label><input type="radio" name="question2" value="d"> All of the above</label><br><br>
+
+            <!-- 题目3 -->
+            <p>3. Hao's web design and development skills relate to:</p>
+            <label><input type="radio" name="question3" value="a" required> Contextual inquiry</label><br>
+            <label><input type="radio" name="question3" value="b"> Participant observation</label><br>
+            <label><input type="radio" name="question3" value="c"> User interface design</label><br>
+            <label><input type="radio" name="question3" value="d"> Prototype sorting</label><br><br>
+
+            <!-- 题目4 -->
+            <p>4. Hao is super passionate about:</p>
+            <label><input type="radio" name="question4" value="a" required> People</label><br>
+            <label><input type="radio" name="question4" value="b"> Innovation</label><br>
+            <label><input type="radio" name="question4" value="c"> Human-centred design</label><br>
+            <label><input type="radio" name="question4" value="d"> All of the above and more!</label><br><br>
         </div>
-        <button id="submit">Submit Quiz</button>
+
+        <!-- 隐藏得分字段，提交给 Formspree -->
+        <input type="hidden" name="score" id="scoreInput">
+
+        <!-- 提交按钮 -->
+        <button type="submit" id="submit">Submit Quiz</button>
+
+        <!-- 显示结果 -->
         <div id="results"></div>
-        <script src="./quiz.js"></script>
-    </body>
+    </form>
+
+    <!-- JavaScript 计算得分 -->
+    <script>
+        document.getElementById('quiz-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // 阻止表单直接提交
+
+            // 正确答案
+            const correctAnswers = ['a', 'c', 'c', 'd'];
+            let score = 0;
+
+            for (let i = 0; i < correctAnswers.length; i++) {
+                const selected = document.querySelector(`input[name="question${i+1}"]:checked`);
+                if (selected && selected.value === correctAnswers[i]) {
+                    score++;
+                }
+            }
+
+            // 显示得分
+            document.getElementById('results').innerText = `Your score is ${score} out of 4`;
+
+            // 把分数写进隐藏 input，传到 Formspree
+            document.getElementById('scoreInput').value = `Score: ${score}/4`;
+
+            // 交表单
+            event.target.submit();
+        });
+    </script>
+</body>
 </html>
