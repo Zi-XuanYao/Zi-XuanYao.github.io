@@ -41,41 +41,9 @@
             <label><input type="radio" name="question4" value="d"> All of the above and more!</label><br><br>
         </div>
 
-        <!-- 隐藏得分字段，提交给 Formspree -->
-        <input type="hidden" name="score" id="scoreInput">
-
         <!-- 提交按钮 -->
         <button type="submit" id="submit">Submit Quiz</button>
-
-        <!-- 显示结果 -->
-        <div id="results"></div>
     </form>
 
-    <!-- JavaScript 计算得分 -->
-    <script>
-        document.getElementById('quiz-form').addEventListener('submit', function(event) {
-            event.preventDefault(); // 阻止表单直接提交
-
-            // 正确答案
-            const correctAnswers = ['a', 'c', 'c', 'd'];
-            let score = 0;
-
-            for (let i = 0; i < correctAnswers.length; i++) {
-                const selected = document.querySelector(`input[name="question${i+1}"]:checked`);
-                if (selected && selected.value === correctAnswers[i]) {
-                    score++;
-                }
-            }
-
-            // 显示得分
-            document.getElementById('results').innerText = `Your score is ${score} out of 4`;
-
-            // 把分数写进隐藏 input，传到 Formspree
-            document.getElementById('scoreInput').value = `Score: ${score}/4`;
-
-            // 交表单
-            event.target.submit();
-        });
-    </script>
 </body>
 </html>
